@@ -1,0 +1,14 @@
+{
+    "name": "telegram-mini-app",
+    "version": "1.0.0",
+    "main": "index.js",
+    "dependencies": {
+        "@twa-dev/sdk": "^8.0.1",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build"
+    }
+}
