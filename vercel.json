@@ -1,0 +1,20 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "src/App.js",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "api/generate-invoice.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/generate-invoice",
+        "dest": "/api/generate-invoice.js"
+      }
+    ]
+  }
+  
