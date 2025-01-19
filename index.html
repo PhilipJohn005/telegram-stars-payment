@@ -30,13 +30,14 @@
     // Function to call the backend and generate an invoice
     async function getInvoiceLink() {
   try {
-    const response = await fetch("https://telegram-stars-payment.vercel.app/generate-invoice", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: Telegram.WebApp.initDataUnsafe.user.id }),
-    });
+    const response = await fetch("/generate-invoice", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({ userId: Telegram.WebApp.initDataUnsafe.user.id }),
+});
+
 
     const data = await response.json();
     if (data.invoiceLink) {
