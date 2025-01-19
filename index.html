@@ -37,10 +37,10 @@
         if (Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
           const userId = Telegram.WebApp.initDataUnsafe.user.id;
 
-          const response = await fetch("/generate-invoice", {
-            method: "POST",
+          const response = await fetch('/api/generate-invoice', {  // Correct API endpoint for Vercel
+            method: 'POST',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({ userId: userId }),
           });
@@ -49,30 +49,29 @@
           if (data.invoiceLink) {
             // Use the Telegram SDK to open the invoice
             Telegram.WebApp.openInvoice(data.invoiceLink, (status) => {
-              if (status === "paid") {
-                alert("Payment successful! Thank you!");
+              if (status === 'paid') {
+                alert('Payment successful! Thank you!');
               } else {
-                alert("Payment not completed. Please try again.");
+                alert('Payment not completed. Please try again.');
               }
             });
           } else {
-            alert("Failed to generate invoice. Please try again.");
+            alert('Failed to generate invoice. Please try again.');
           }
         } else {
-          alert("Unable to fetch user information. Please try again.");
+          alert('Unable to fetch user information. Please try again.');
         }
       } catch (error) {
-        console.error("Error fetching invoice link:", error);
-        alert("An error occurred while generating the invoice.");
+        console.error('Error fetching invoice link:', error);
+        alert('An error occurred while generating the invoice.');
       }
     }
 
     // Add event listener to the button
-    payButton.addEventListener("click", () => {
+    payButton.addEventListener('click', () => {
       getInvoiceLink();
     });
   </script>
 
-  <button>Click</button>
 </body>
 </html>
