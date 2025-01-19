@@ -25,39 +25,47 @@
   <button id="payButton">Pay Now</button>
 
   <script>
+    // Ensure the WebApp SDK is fully loaded and initialized
+    Telegram.WebApp.ready();
+
     const payButton = document.getElementById("payButton");
 
     // Function to call the backend and generate an invoice
     async function getInvoiceLink() {
-  try {
-    const response = await fetch("/generate-invoice", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({ userId: Telegram.WebApp.initDataUnsafe.user.id }),
-});
+      try {
+        // Check if WebApp.initDataUnsafe is available
+        if (Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+          const userId = Telegram.WebApp.initDataUnsafe.user.id;
 
+          const response = await fetch("/generate-invoice", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId: userId }),
+          });
 
-    const data = await response.json();
-    if (data.invoiceLink) {
-      // Use the Telegram SDK to open the invoice
-      Telegram.WebApp.openInvoice(data.invoiceLink, (status) => {
-        if (status === "paid") {
-          alert("Payment successful! Thank you!");
+          const data = await response.json();
+          if (data.invoiceLink) {
+            // Use the Telegram SDK to open the invoice
+            Telegram.WebApp.openInvoice(data.invoiceLink, (status) => {
+              if (status === "paid") {
+                alert("Payment successful! Thank you!");
+              } else {
+                alert("Payment not completed. Please try again.");
+              }
+            });
+          } else {
+            alert("Failed to generate invoice. Please try again.");
+          }
         } else {
-          alert("Payment not completed. Please try again.");
+          alert("Unable to fetch user information. Please try again.");
         }
-      });
-    } else {
-      alert("Failed to generate invoice. Please try again.");
+      } catch (error) {
+        console.error("Error fetching invoice link:", error);
+        alert("An error occurred while generating the invoice.");
+      }
     }
-  } catch (error) {
-    console.error("Error fetching invoice link:", error);
-    alert("An error occurred while generating the invoice.");
-  }
-}
-
 
     // Add event listener to the button
     payButton.addEventListener("click", () => {
@@ -65,6 +73,6 @@
     });
   </script>
 
-  <button >Click</button>
+  <button>Click</button>
 </body>
 </html>
